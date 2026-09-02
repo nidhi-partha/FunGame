@@ -4,7 +4,7 @@ A pink, sorority-coded party game for friend groups. Someone drops an anonymous 
 
 ---
 
-## 🎀 Vibe / Theme
+##Vibe / Theme
 
 - **Color palette:** hot pink, blush, magenta, with white/gold accents (think sorority letters, rush week flyers, y2k-cute).
 - **Tone:** playful, a little chaotic, a little judgmental — the game *wants* people to gasp and argue.
@@ -12,12 +12,10 @@ A pink, sorority-coded party game for friend groups. Someone drops an anonymous 
 
 ---
 
-## 👯 Roles
+##Roles
 
-| Role | Description |
-|---|---|
-| **Host** | Creates the game room, controls round pacing (e.g. advances to next question), sees full results. |
-| **Player** | Joins via room code or link, answers prompts, votes, debates. |
+Host: Creates the game room, controls round pacing (e.g. advances to next question)
+Player: Joins via room code or link, answers prompts, votes, debates.
 | **The AI** | (Optional/advanced) Occasionally submits a fake "bluff" answer disguised as a real player's response. |
 
 Accounts are optional for v1 — players can join with just a display name + room code. Accounts (future) would let the game remember your stats/history across sessions.
