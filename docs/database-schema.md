@@ -46,20 +46,20 @@ Notes:
   revisiting whether score should be derived instead of stored, once real usage shows
   whether that read pattern matters.
 
-## Auth (not decided)
+## Auth decided
 
-No auth is implemented yet. Two realistic options:
-
-1. **Anonymous Supabase auth** — each device gets a Supabase anonymous session on
+1. **Decided: Anonymous Supabase auth** — each device gets a Supabase anonymous session on
    join; `players.id` = the auth user id. Enables RLS policies scoped to "you can only
    act as your own player row."
-2. **No auth, room-code-as-secret** — players are just rows with no linked auth user;
+   (more flexible for future features such as dedicated accounts for users).
+   
+2. **Rejected: No auth, room-code-as-secret** — players are just rows with no linked auth user;
    trust is entirely "you know the room code." Simpler, but no real security boundary
    and no path to persistent accounts later.
 
-This decision blocks writing real RLS policies (currently TODO'd out in the draft
-migration) and should be made before `supabase/migrations/0001_init_draft.sql` is
-finalized.
+This decision unblocks writing real RLS policies (currently TODO'd out in the draft
+migration) — policies can now reference `auth.uid() = players.id` when
+`supabase/migrations/0001_init_draft.sql` is finalized.
 
 ## Prompts: table vs. constant
 
