@@ -4,7 +4,7 @@ A real-time multiplayer party game. A host creates a room, friends join with a r
 code or link, everyone anonymously answers a prompt, and the group tries to guess who
 said what — while debating live. Some statements might even be AI-generated bluffs.
 
-Pink, sorority-coded, a little chaotic on purpose. See [`docs/game-flow.md`](docs/game-flow.md)
+See [`docs/game-flow.md`](docs/game-flow.md)
 for the full rules and [`docs/architecture.md`](docs/architecture.md) for how it's built.
 
 ## Core game flow
