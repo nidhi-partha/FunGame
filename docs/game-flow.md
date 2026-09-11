@@ -65,15 +65,19 @@ the game shows final standings. Highest total score wins.
 
 ## Open questions (flagging for review, not deciding here)
 
-- **One Response per Round, or all Responses to a Prompt revealed across multiple
-  Rounds?** Current types assume the latter (a `Round` has one `promptId` but reveals
-  one `Response` at a time via `revealedResponseId`) — i.e. if 6 players answer the
-  same prompt, that could be 6 back-to-back reveal/vote/results cycles, or we group
-  them. Needs a decision before `roundLogic.ts` is filled in for real.
-- **Who advances phases?** Only the host, on a timer, or first-to-something? Affects
+* **Who advances phases?** Only the host, on a timer, or first-to-something? Affects
   whether phase transitions are triggered from the host's client or run server-side
   unconditionally.
-- **Total rounds vs. "one statement per player"** — fixed round count
+
+* **Total rounds vs. "one statement per player"** — fixed round count
   (`GAME_CONFIG.defaultTotalRounds`) vs. scaling to player count.
-- **Bluff round frequency** — currently `0` (disabled) in `GAME_CONFIG`. Needs a
-  product decision before `roundLogic.ts`'s bluff-generation TODO is implemented.
+  *(v1 default: 1 prompt/round, see ADR 0001 — but the general fixed-vs-scaling
+  question for future multi-round configs is still open.)*
+
+## Decided 
+
+* **One Response per Round.** A `Round` reveals exactly one `Response` at a time via
+  `revealedResponseId`. If 6 players answer the same prompt, that's 6 back-to-back
+  reveal → vote → results cycles, rather than one group. 
+* **Bluff rounds are out of scope for v1.** `GAME_CONFIG.bluffRoundFrequency` stays
+  `0`. Revisit post-v1.
