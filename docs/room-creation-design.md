@@ -7,10 +7,11 @@ Companion to [`database-schema.md`](database-schema.md) and
 
 ## Goal
 
-A host clicks "Host a Game", types a display name, and ends up in a freshly created room
-as its host — with no way to create a room that has no host.
+The host clicks "Host a Game", types a display name, and ends up in a created room
+as its host. They can then share the code for this room to invite other players.
+A host must be associated with a room and a room must be associated iwth a host.
 
-## The blocker: circular required references
+## The blocker: circular required references1
 
 `0001_init.sql` sets up a chicken-and-egg pair of rules:
 
