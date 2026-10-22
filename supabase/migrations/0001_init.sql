@@ -1,7 +1,7 @@
--- DRAFT — not yet reviewed or applied to a real project.
--- Mirrors src/types/database.ts. See docs/database-schema.md for the entity
--- relationship writeup this is based on. Auth and RLS policies are intentionally
--- left as TODOs below — decide the auth approach (see docs/architecture.md) first.
+-- Initial schema. Mirrors src/types/database.ts. See docs/database-schema.md for the
+-- entity relationship writeup, and docs/supabase-migration-design.md for the decisions
+-- behind finalizing it. RLS + policies are deferred to a future 0002 migration, shipped
+-- with the client's anonymous-auth wiring (auth.uid() = players.id).
 
 create extension if not exists "pgcrypto";
 
@@ -69,14 +69,16 @@ create table votes (
   round_id uuid not null references rounds (id) on delete cascade,
   response_id uuid not null references responses (id) on delete cascade,
   voter_id uuid not null references players (id),
-  guessed_player_id text not null, -- a players.id uuid (as text) or the literal 'BLUFF'
+  guessed_player_id uuid references players (id), -- nullable; null when the guess was "bluff"
+  is_bluff_guess boolean not null default false,
   created_at timestamptz not null default now(),
-  unique (response_id, voter_id) -- one vote per player per statement
+  unique (response_id, voter_id) -- one guess per player per statement
 );
 
--- TODO: enable RLS + policies once the auth approach is decided (see docs/architecture.md).
--- Likely shape: players can read everything in their own room, but can only
--- insert/update rows tied to their own player_id/voter_id.
+-- TODO (0002): enable RLS + policies once anonymous-auth client wiring exists
+-- (see docs/supabase-migration-design.md). Likely shape: players can read
+-- everything in their own room, but can only insert/update rows tied to
+-- their own player_id/voter_id.
 -- alter table rooms enable row level security;
 -- alter table players enable row level security;
 -- ...

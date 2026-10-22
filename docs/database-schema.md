@@ -1,8 +1,8 @@
-# Database Schema (Proposed — for review)
+# Database Schema (as of October 21, 2026)
 
-This documents the schema drafted in `supabase/migrations/0001_init_draft.sql`.
-**Nothing here has been applied to a real Supabase project yet.** Review and adjust
-before running it — see `supabase/migrations/README.md` for how to apply once agreed.
+This documents the schema finalized in `supabase/migrations/0001_init.sql`.
+**Nothing here has been applied to a real Supabase project yet.** See
+`supabase/migrations/README.md` for how to apply it.
 
 ## Entities
 
@@ -37,14 +37,14 @@ Notes:
   screen for that round's REVEAL/VOTING/RESULTS phases.
 - `votes` has a unique constraint on `(response_id, voter_id)` — one guess per player
   per statement.
-- `votes.guessed_player_id` is stored as `text`, not a strict foreign key, because it
-  needs to hold either a real `players.id` (uuid) or the literal string `'BLUFF'`.
-  Open question: model this more strictly (e.g. a separate `is_bluff_guess boolean`
-  column instead of a sentinel string)?
-- `players.score` is a running total for convenience/leaderboard reads; the
-  authoritative record of *why* is really the set of correct votes per round. Worth
-  revisiting whether score should be derived instead of stored, once real usage shows
-  whether that read pattern matters.
+- `votes.guessed_player_id` is a nullable uuid foreign key to `players.id`; a separate
+  `votes.is_bluff_guess` boolean marks "I think this was an AI bluff" (in which case
+  `guessed_player_id` is null). Resolved: the earlier `'BLUFF'` text sentinel was dropped
+  in favor of this stricter shape (see `supabase-migration-design.md`).
+- `players.score` is a stored running total for cheap leaderboard reads; the
+  authoritative record of *why* is the set of correct votes per round. Resolved: keep it
+  stored rather than deriving on read — deriving is a premature optimization with no
+  evidence of drift (see `supabase-migration-design.md`).
 
 ## Auth decided
 
@@ -57,9 +57,9 @@ Notes:
    trust is entirely "you know the room code." Simpler, but no real security boundary
    and no path to persistent accounts later.
 
-This decision unblocks writing real RLS policies (currently TODO'd out in the draft
-migration) — policies can now reference `auth.uid() = players.id` when
-`supabase/migrations/0001_init_draft.sql` is finalized.
+This decision unblocks writing real RLS policies — they can reference
+`auth.uid() = players.id`. They're deferred to a future `0002` migration, shipped
+together with the client's anonymous-auth wiring (see `supabase-migration-design.md`).
 
 ## Prompts: table vs. constant
 

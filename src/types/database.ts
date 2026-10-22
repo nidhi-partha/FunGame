@@ -66,7 +66,8 @@ export interface VoteRow {
   round_id: string;
   response_id: string;
   voter_id: string;
-  guessed_player_id: string; // 'BLUFF' sentinel or a player uuid
+  guessed_player_id: string | null; // player uuid, or null for a bluff guess
+  is_bluff_guess: boolean;
   created_at: string;
 }
 
