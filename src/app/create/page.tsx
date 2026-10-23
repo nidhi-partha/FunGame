@@ -12,7 +12,7 @@ import {
 } from "@/lib/room";
 
 /** How many times to retry if a generated room code collides with an existing one. */
-const MAX_CODE_ATTEMPTS = 5;
+const MAX_CODE_ATTEMPTS = 3;
 
 /**
  * Host flow: pick a display name, atomically create a Room + host Player via the
@@ -52,6 +52,13 @@ export default function CreateRoomPage() {
 
       // 23505 = unique_violation: this code is taken, generate another and retry.
       if (rpcError.code !== "23505") {
+        // Surface the real reason in the browser console while we're wiring this up.
+        console.error("create_room_with_host failed:", {
+          message: rpcError.message,
+          code: rpcError.code,
+          details: rpcError.details,
+          hint: rpcError.hint,
+        });
         setError("Something went wrong creating your room. Please try again.");
         setIsSubmitting(false);
         return;
