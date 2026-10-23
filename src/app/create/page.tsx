@@ -86,7 +86,7 @@ export default function CreateRoomPage() {
                 maxLength={DISPLAY_NAME_MAX_LENGTH}
                 autoFocus
                 disabled={isSubmitting}
-                placeholder="e.g. Nidhi"
+                placeholder="e.g. Jane Doe"
                 className="rounded-md border border-pink-300 px-3 py-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-400"
               />
             </label>
