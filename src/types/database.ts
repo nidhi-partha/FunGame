@@ -87,5 +87,11 @@ export interface Database {
       responses: { Row: ResponseRow; Insert: Partial<ResponseRow>; Update: Partial<ResponseRow> };
       votes: { Row: VoteRow; Insert: Partial<VoteRow>; Update: Partial<VoteRow> };
     };
+    Functions: {
+      create_room_with_host: {
+        Args: { p_display_name: string; p_code: string };
+        Returns: string;
+      };
+    };
   };
 }
